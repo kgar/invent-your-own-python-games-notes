@@ -13,10 +13,7 @@ def getNewBoard():
         # Each list in the main list has 15 single-character strings.
         for y in range(15):
             # Use different characters for the ocean to make it more readable.
-            if random.randint(0, 1) == 0:
-                board[x].append('~')
-            else:
-                board[x].append('`')
+            board[x].append('~')
     return board
 
 
@@ -94,7 +91,7 @@ def makeMove(board, chests, x, y):
 
 def enterPlayerMove(previousMoves):
     # Let the player enter their move. Return a two-item list of int xy coordinates.
-    print('Where do you want to drop the next sonar device? (0-59 0-14) (or type quite)')
+    print('Where do you want to drop the next sonar device? (0-59 0-14) (or type quit)')
     while True:
         move = input()
         if move.lower() == 'quit':
@@ -114,7 +111,7 @@ def enterPlayerMove(previousMoves):
 def showInstructions():
     print('''Instructions:
 You are the captain of the Simon, a treasure-hunting ship. Your current mission 
-is to use sonar devices to find three sunked treasure chests at the bottom of 
+is to use sonar devices to find three sunken treasure chests at the bottom of 
 the ocean. But you only have cheap sonar that finds distance, not direction.
 
 Enter the coordinates to drop a sonar device. The ocean map will be marked with
@@ -176,7 +173,7 @@ while True:
     while sonarDevices > 0:
         # Show sonar device and chest statuses.
         print(
-            f'You have {sonarDevices} sonar devices(s) left. {len(theChests)} treasure chest(s) remaining.')
+            f'You have {sonarDevices} sonar device(s) left. {len(theChests)} treasure chest(s) remaining.')
 
         x, y = enterPlayerMove(previousMoves)
         # We must track all moves so that sonar devices can be updated.
