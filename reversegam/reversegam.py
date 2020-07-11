@@ -54,7 +54,8 @@ def isValidMove(board, tile, xstart, ystart):
                     if x == xstart and y == ystart:
                         break
                     tilesToFlip.append([x, y])
-    if len(tilesToFlip) == 0: # If no tiles were flipped, this is not a valid move.
+    # If no tiles were flipped, this is not a valid move.
+    if len(tilesToFlip) == 0:
         return False
     return tilesToFlip
 
@@ -168,7 +169,8 @@ def getPlayerMove(board, playerTile):
             else:
                 break
         else:
-            print('That is not a valid move. Enter the column (1-8) and then the row (1-8).')
+            print(
+                'That is not a valid move. Enter the column (1-8) and then the row (1-8).')
             print('For example, 81 will move on the top-right corner.')
 
     return [x, y]
@@ -239,7 +241,7 @@ def playGame(playerTile, computerTile):
                     continue
                 else:
                     makeMove(board, playerTile, move[0], move[1])
-                    turn = 'computer'
+            turn = 'computer'
 
         elif turn == 'computer':  # Computer's turn
             if computerValidMoves != []:
@@ -265,9 +267,11 @@ while True:
     scores = getScoreOfBoard(finalBoard)
     print(f'X scored {scores["X"]}. O scored {scores["O"]} points.')
     if scores[playerTile] > scores[computerTile]:
-        print(f'You beat the computer by {scores[playerTile] - scores[computerTile]} points! Congratulations!')
+        print(
+            f'You beat the computer by {scores[playerTile] - scores[computerTile]} points! Congratulations!')
     elif scores[playerTile] < scores[computerTile]:
-        print(f'You lost. The computer beat you by {scores[computerTile] - scores[playerTile]} points.')
+        print(
+            f'You lost. The computer beat you by {scores[computerTile] - scores[playerTile]} points.')
     else:
         print('The game was a tie!')
 
