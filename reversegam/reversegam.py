@@ -22,7 +22,7 @@ def getNewBoard():
     # Create a brand-new, blank board data structure.
     board = []
     for i in range(WIDTH):
-        board.append[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']
+        board.append([' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '])
     return board
 
 
@@ -43,7 +43,7 @@ def isValidMove(board, tile, xstart, ystart):
         x += xdirection  # First step in the x direction
         y += ydirection  # First step in the y direction
         while isOnBoard(x, y) and board[x][y] == otherTile:
-            # Keep moving in this x & y direction
+            # Keep moving in this x & y direction.
             x += xdirection
             y += ydirection
             if isOnBoard(x, y) and board[x][y] == tile:
@@ -54,7 +54,7 @@ def isValidMove(board, tile, xstart, ystart):
                     if x == xstart and y == ystart:
                         break
                     tilesToFlip.append([x, y])
-    if len(tilesToFlip) == 0:
+    if len(tilesToFlip) == 0: # If no tiles were flipped, this is not a valid move.
         return False
     return tilesToFlip
 
@@ -65,7 +65,7 @@ def isOnBoard(x, y):
 
 
 def getBoardWithValidMoves(board, tile):
-    # Return a new board with periods marking the valid moves the player can make
+    # Return a new board with periods marking the valid moves the player can make.
     boardCopy = getBoardCopy(board)
 
     for x, y in getValidMoves(boardCopy, tile):
@@ -84,7 +84,7 @@ def getValidMoves(board, tile):
 
 
 def getScoreOfBoard(board):
-    # Determine the score by counting the tiles. Return a dictionary with keys 'O' and 'X'
+    # Determine the score by counting the tiles. Return a dictionary with keys 'X' and 'O'.
     xscore = 0
     oscore = 0
     for x in range(WIDTH):
@@ -93,7 +93,7 @@ def getScoreOfBoard(board):
                 xscore += 1
             if board[x][y] == 'O':
                 oscore += 1
-    return {'X': xscore, 'Y': oscore}
+    return {'X': xscore, 'O': oscore}
 
 
 def enterPlayerTile():
@@ -112,7 +112,7 @@ def enterPlayerTile():
 
 
 def whoGoesFirst():
-    # Randomly choose who goes first
+    # Randomly choose who goes first.
     if random.randint(0, 1) == 0:
         return 'computer'
     else:
@@ -121,7 +121,7 @@ def whoGoesFirst():
 
 def makeMove(board, tile, xstart, ystart):
     # Place the tile on the board at xstart, ystart and flip any of the opponent's pieces.
-    # Return False if this is an invalid move; True if it is valid
+    # Return False if this is an invalid move; True if it is valid.
     tilesToFlip = isValidMove(board, tile, xstart, ystart)
 
     if tilesToFlip == False:
@@ -145,13 +145,13 @@ def getBoardCopy(board):
 
 
 def isOnCorner(x, y):
-    # Return True if the positino is in one of the four corners.
+    # Return True if the position is in one of the four corners.
     return (x == 0 or x == WIDTH - 1) and (y == 0 or y == HEIGHT - 1)
 
 
-def getPlayerMove(baord, playerTile):
+def getPlayerMove(board, playerTile):
     # Let the player enter their move.
-    # Return the move as [x, y] (or return the strings 'hints' or 'quit')
+    # Return the move as [x, y] (or return the strings 'hints' or 'quit').
     DIGITS1TO8 = '1 2 3 4 5 6 7 8'.split()
     while True:
         print('Enter your move, "quit" to end the game, or "hints" to toggle hints.')
@@ -163,20 +163,19 @@ def getPlayerMove(baord, playerTile):
         if len(move) == 2 and move[0] in DIGITS1TO8 and move[1] in DIGITS1TO8:
             x = int(move[0]) - 1
             y = int(move[1]) - 1
-            if isValid(board, playerTile, x, y) == False:
+            if isValidMove(board, playerTile, x, y) == False:
                 continue
             else:
                 break
         else:
-            print(
-                'That is not a valid move. Enter the column (1-8) and then the row (1-8).')
-            print('For example, 81 will move on the top-right corner')
+            print('That is not a valid move. Enter the column (1-8) and then the row (1-8).')
+            print('For example, 81 will move on the top-right corner.')
 
     return [x, y]
 
 
 def getComputerMove(board, computerTile):
-    # Given a board and the computers's tile, determine where to
+    # Given a board and the computer's tile, determine where to
     # move and return that move as an [x, y] list.
     possibleMoves = getValidMoves(board, computerTile)
     random.shuffle(possibleMoves)  # Randomize the order of the moves.
@@ -208,7 +207,7 @@ def playGame(playerTile, computerTile):
     turn = whoGoesFirst()
     print(f'The {turn} will go first.')
 
-    # Clear the baord and place starting pieces.
+    # Clear the board and place starting pieces.
     board = getNewBoard()
     board[3][3] = 'X'
     board[3][4] = 'O'
@@ -237,17 +236,17 @@ def playGame(playerTile, computerTile):
                     sys.exit()  # Terminate the program.
                 elif move == 'hints':
                     showHints = not showHints
+                    continue
                 else:
-                    makeMove(baord, playerTile, move[0])
-
-            turn = 'computer'
+                    makeMove(board, playerTile, move[0], move[1])
+                    turn = 'computer'
 
         elif turn == 'computer':  # Computer's turn
             if computerValidMoves != []:
                 drawBoard(board)
                 printScore(board, playerTile, computerTile)
 
-                input('Press Enter to see the computer\'s move.)
+                input('Press Enter to see the computer\'s move.')
                 move = getComputerMove(board, computerTile)
                 makeMove(board, computerTile, move[0], move[1])
 
@@ -264,13 +263,11 @@ while True:
     # Display the final score.
     drawBoard(finalBoard)
     scores = getScoreOfBoard(finalBoard)
-    print(f'X scored {scores['X']}. O scored {scores['O']} points.')
+    print(f'X scored {scores["X"]}. O scored {scores["O"]} points.')
     if scores[playerTile] > scores[computerTile]:
-        print(
-            f'You beat the computer by {scores[playerTile] - scores[computerTile]} points! Congratulations!')
+        print(f'You beat the computer by {scores[playerTile] - scores[computerTile]} points! Congratulations!')
     elif scores[playerTile] < scores[computerTile]:
-        print(
-            f'You lost. The computer beat you by {scores[computerTile] - scores[playerTile]} points.')
+        print(f'You lost. The computer beat you by {scores[computerTile] - scores[playerTile]} points.')
     else:
         print('The game was a tie!')
 
